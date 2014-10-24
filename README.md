@@ -3,7 +3,7 @@
 A router for client-side (browser) JS applications.
 
 Features:
-* implements the routing strategy from [HapiJS]() (uses [call]() under the covers)
+* implements the routing strategy from [HapiJS](http://hapijs.com/) (uses [call](https://github.com/hapijs/call) under the covers)
 * emits events instead of calling callbacks of function handlers when a route is hit
 * supports using the url hash or the HTML5 history API
 
@@ -39,7 +39,7 @@ Don't forget to bump the version in the `package.json` using the [semver](http:/
 
 ## Usage
 
-This module assumes that you are using [browserify]() to bundle your client-side code.
+This module assumes that you are using [browserify](http://browserify.org/) to bundle your client-side code.
 
 To use the router, require it in and initialize it like so:
 
