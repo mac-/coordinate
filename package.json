@@ -1,0 +1,51 @@
+{
+	"name": "coordinate",
+	"description": "A router based on the hapijs call module targeted at the browser",
+	"contributors": [
+		"Mac Angell <mac.ang311@gmail.com>"
+	],
+	"version": "0.0.1",
+	"dependencies": {
+		"call": "1.x.x"
+	},
+	"devDependencies": {
+		"mocha": "1.x.x",
+		"jshint": "2.x.x",
+		"travis-cov": "0.x.x",
+		"blanket": "1.x.x",
+		"node-dependencies": "0.x.x",
+		"coveralls": "2.x.x",
+		"mocha-lcov-reporter": "0.x.x"
+	},
+	"keywords": [
+		"router",
+		"route",
+		"routing",
+		"path",
+		"browser"
+	],
+	"engines": {
+		"node": ">=0.10.0"
+	},
+	"main": "./lib/index.js",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:mac-/coordinate.git"
+	},
+	"scripts": {
+		"test": "make test && make test-cov && make test-lcov | ./node_modules/coveralls/bin/coveralls.js"
+	},
+	"config": {
+		"blanket": {
+			"pattern": "//^((?!/node_modules/)(?!/test/).)*$/ig",
+			"onlyCwd": true,
+			"data-cover-flags": {
+				"branchTracking": true
+			}
+		},
+		"travis-cov": {
+			"threshold": 100
+		}
+	},
+	"license": "MIT"
+}
