@@ -9,6 +9,11 @@ describe('coordinate tests', function() {
 			location: {
 				pathname: '/',
 				hash: '#/'
+			},
+			history: {
+				pushState: function(obj, title, path) {
+					mockWindow.location.pathname = path;
+				}
 			}
 		};
 	});

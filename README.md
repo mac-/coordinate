@@ -3,7 +3,7 @@
 A router for client-side (browser) JS applications.
 
 Features:
-* implements the routing strategy from [HapiJS](http://hapijs.com/) (uses [call](https://github.com/hapijs/call) under the covers)
+* implements the routing strategy from [HapiJS](http://hapijs.com/api#path-matching-order) (uses [call](https://github.com/hapijs/call) under the covers)
 * emits events instead of calling callbacks of function handlers when a route is hit
 * supports using the url hash or the HTML5 history API
 
@@ -58,31 +58,49 @@ router.initialize({ routes: routes });
 
 ```
 
-## `initialize` Options
+# API
 
-### `routes`
+The following methods are available on the `router` instance:
 
-A collection of valid routes
+## `initialize(options:Object)`
+
+Initializes the routes. This method must be called before any of the other methods.
+
+### `options`
+
+An object that contains the information needed to configure the router.
+
+#### `routes`
+
+A collection of valid routes.
 
 Required.
 
-### `root`
+#### `root`
 
 The root path that all routes are appended to. For example, if the root is set to '/api', and there is a route '/users', then the expected full path would either be '/api/users' or '/api/#/users' depending on whether it is using the URL hash or HTML5 history API.
 
 Defaults to `'/'`
 
-### `isCaseSensitive`
+#### `isCaseSensitive`
 
 A flag that denotes whether the provided route paths should be considered case sensitive or not.
 
 Defaults to `false`
 
-### `useHash`
+#### `useHash`
 
 A flag that denotes whether or not to use the hash for route paths, or to use the HTML5 history API.
 
 Defaults to `false`
+
+
+
+## `go(path:String, context:Object)`
+
+Looks up the route associated to the path, changes the hash or url in the browser, and emits a change event with the route that was hit, the path parameters, the context that was passed, and an array of the history of previous paths hit.
+
+### 
 
 # License
 
