@@ -19,19 +19,19 @@ describe('pathStrategyFactory tests', function() {
 
 		it('should throw an error for an invalid path strategy', function(done) {
 			assert.throws(function() {
-				pathStrategy = PathStrategyFactory.getPathStrategy('fnord', { _window: mockWindow });
+				var pathStrategy = PathStrategyFactory.getPathStrategy('fnord', { _window: mockWindow });
 			});
 			done();
 		});
 
 		it('should return an instance of HashPathStrategy', function(done) {
-			pathStrategy = PathStrategyFactory.getPathStrategy('hash', { _window: mockWindow });
+			var pathStrategy = PathStrategyFactory.getPathStrategy('hash', { _window: mockWindow });
 			assert(pathStrategy instanceof HashPathStrategy);
 			done();
 		});
 
 		it('should return an instance of HistoryPathStrategy', function(done) {
-			pathStrategy = PathStrategyFactory.getPathStrategy('history', { _window: mockWindow });
+			var pathStrategy = PathStrategyFactory.getPathStrategy('history', { _window: mockWindow });
 			assert(pathStrategy instanceof HistoryPathStrategy);
 			done();
 		});
