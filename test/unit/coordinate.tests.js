@@ -32,6 +32,7 @@ describe('coordinate tests', function() {
 					assert(data.params);
 					assert(data.context);
 					assert(data.history);
+					router.removeAllListeners('change');
 					done();
 				};
 
@@ -64,6 +65,7 @@ describe('coordinate tests', function() {
 					assert(data.context);
 					assert(data.history);
 					if (router.getCurrentRoute() === '/fnord') {
+						router.removeAllListeners('change');
 						done();
 					}
 				};
@@ -85,6 +87,7 @@ describe('coordinate tests', function() {
 					assert(data.context);
 					assert(data.history);
 					if (router.getCurrentRoute() === '/fnord') {
+						router.removeAllListeners('change');
 						done();
 					}
 				};
@@ -115,6 +118,7 @@ describe('coordinate tests', function() {
 
 			router.on('error', function(error) {
 				assert(error instanceof Error);
+				router.removeAllListeners('error');
 				done();
 			});
 			assert(!router.go());
@@ -126,6 +130,7 @@ describe('coordinate tests', function() {
 
 			router.on('error', function(error) {
 				assert(error instanceof Error);
+				router.removeAllListeners('error');
 				done();
 			});
 			assert(!router.go('/nada'));
@@ -146,6 +151,7 @@ describe('coordinate tests', function() {
 					assert(data.context);
 					assert(data.history);
 					if (router.getCurrentRoute() === '/fnord') {
+						router.removeAllListeners('change');
 						done();
 					}
 				};
@@ -176,8 +182,12 @@ describe('coordinate tests', function() {
 		it('should return false if there is no route to go back to', function(done) {
 			var router = Router.getInstance();
 			router.initialize({ routes: ['/', '/fnord'], useHash: false, root: '/', _window: mockWindow });
-			assert(!router.back());
-			done();
+			router.on('change', function() {
+				router.removeAllListeners('change');
+				assert(!router.back());
+				done();
+			});
+			
 		});
 
 		it('should emit change event when the last route is found', function(done) {
@@ -188,7 +198,12 @@ describe('coordinate tests', function() {
 					assert(data.params);
 					assert(data.context);
 					assert(data.history);
+
+					// simulate browser behavior when path changes
+					mockWindow.onpopstate();
+
 					if (lastRoute === '/fnord' && router.getCurrentRoute() === '/') {
+						router.removeAllListeners('change');
 						done();
 					}
 					lastRoute = router.getCurrentRoute();
@@ -197,18 +212,8 @@ describe('coordinate tests', function() {
 			router.on('change', changeHandler);
 			router.initialize({ routes: ['/', '/fnord'], useHash: false, root: '/', _window: mockWindow });
 
-			// simulate browser behavior when path changes
-			mockWindow.onpopstate();
-
-			router.go('/fnord');
-
-			// simulate browser behavior when path changes
-			mockWindow.onpopstate();
-
-			assert(router.back());
-
-			// simulate browser behavior when path changes
-			mockWindow.onpopstate();
+			setTimeout(router.go.bind(router, '/fnord'), 25);
+			setTimeout(router.back.bind(router), 50);
 		});
 	});
 
