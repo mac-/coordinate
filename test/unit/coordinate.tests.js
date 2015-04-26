@@ -144,13 +144,15 @@ describe('coordinate tests', function() {
 		});
 
 		it('should emit change event when a route was found for a given path', function(done) {
-			var router = Router.getInstance(),
+			var path = '/fnord',
+				router = Router.getInstance(),
 				changeHandler = function(data) {
 					assert(data.route);
 					assert(data.params);
+					assert(data.queryObj);
 					assert(data.context);
 					assert(data.history);
-					if (router.getCurrentRoute() === '/fnord') {
+					if (data.path === path) {
 						router.removeAllListeners('change');
 						done();
 					}
@@ -159,13 +161,39 @@ describe('coordinate tests', function() {
 			router.on('change', changeHandler);
 			router.initialize({ routes: ['/', '/fnord'], useHash: false, root: '/', _window: mockWindow });
 			
-			// simulate browser behavior when path changes
-			mockWindow.onpopstate();
+			// wait til change propagates before changing path
+			setTimeout(router.go.bind(router, path), 25);
+		});
 
-			assert(router.go('/fnord'));
+		it('should emit change event when a route was found for a given path that contains query params', function(done) {
+			var path = '/fnord',
+				query = '?data=somedata',
+				router = Router.getInstance(),
+				changeHandler = function(data) {
+					assert(data.route);
+					assert(data.params);
+					assert(data.path);
+					assert(data.queryObj);
+					assert(data.context);
+					assert(data.history);
 
-			// simulate browser behavior when path changes
-			mockWindow.onpopstate();
+					// simulate browser behavior when path changes
+					mockWindow.onpopstate();
+
+					if (data.route === path) {
+						router.removeAllListeners('change');
+						assert(data.path + '?' + data.queryString === path + query);
+						assert(data.queryObj.data === 'somedata');
+						done();
+					}
+				};
+
+			router.on('change', changeHandler);
+			router.initialize({ routes: ['/', '/fnord'], useHash: false, root: '/', _window: mockWindow });
+			
+			// wait til change propagates before changing path
+			setTimeout(router.go.bind(router, path + query), 25);
+			
 		});
 	});
 

@@ -48,10 +48,13 @@ var router = require('coordinate').getInstance(),
 	routes = [ '/', '/users', '/users/{userId}' ];
 
 router.on('change', function(data) {
-	console.log(data.route);   // the string route that was hit
-	console.log(data.params);  // an object that contains any path parameters
-	console.log(data.context); // context data that was passed to the router.go method
-	console.log(data.history); // an Array of strings that contain the past paths that were navigated to
+	console.log(data.route);       // the string route that was hit
+	console.log(data.path);        // the raw path
+	console.log(data.queryString); // the raw query string is on the url
+	console.log(data.queryPath);   // the parsed query string object
+	console.log(data.params);      // an object that contains any path parameters
+	console.log(data.context);     // context data that was passed to the router.go method
+	console.log(data.history);     // an Array of strings that contain the past paths that were navigated to
 });
 
 router.initialize({ routes: routes });
@@ -98,7 +101,7 @@ Defaults to `false`
 
 ## `go(path:String, context:Object)`
 
-Looks up the route associated to the path, changes the hash or url in the browser, and emits a change event with the route that was hit, the path parameters, the context that was passed, and an array of the history of previous paths hit.
+Looks up the route associated to the path, changes the hash or url in the browser, and emits a change event with the route that was hit, the path parameters, the query string values, the context that was passed, and an array of the history of previous paths hit.
 
 ### 
 
